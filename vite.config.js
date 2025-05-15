@@ -189,6 +189,9 @@ export default defineConfig({
 		headers: {
 			'Cross-Origin-Embedder-Policy': 'credentialless',
 		},
+		proxy: {
+      '/api': 'http://localhost:3000',
+    },
 		allowedHosts: true,
 	},
 	resolve: {
