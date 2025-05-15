@@ -61,7 +61,7 @@ const AboutPage = () => {
           <div>
             <img 
               className="rounded-lg shadow-xl object-cover w-full h-auto max-h-[400px]"
-              alt="Team brainstorming creative ideas" src="../../public/images/about.jpeg" />
+              alt="Team brainstorming creative ideas" src="/images/about.jpeg" />
           </div>
         </section>
 
