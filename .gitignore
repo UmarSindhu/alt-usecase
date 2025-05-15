@@ -6,7 +6,7 @@ build/
 dist/
 
 # Environment variables
-.env
+.env*
 .env.*  # in case you have multiple env files like .env.local, .env.production
 
 # Logs
