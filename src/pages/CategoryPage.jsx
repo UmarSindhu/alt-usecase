@@ -126,7 +126,7 @@ const CategoryPage = () => {
                     </div>
                   </Card>
                 </motion.div>
-                {(index + 1) % 6 === 0 && index < items.length -1 && (
+                {(index + 1) % 5 === 0 && index < items.length -1 && (
                     <Card className="h-full hover:shadow-xl transition-shadow duration-300 ease-in-out group flex flex-col">
                       <AdPlaceholder slotKey="ad_slot_category_page_inlist_enabled" defaultText={`In-List Ad Spot ${Math.floor(index/6)+1}`} className="h-full my-0" />
                     </Card>

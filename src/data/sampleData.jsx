@@ -1,231 +1,222 @@
-
-    export const sampleData = [
+export const sampleData = [
+  {
+    name: "Binder Clips",
+    slug: "binder-clips",
+    categories: ["office", "household", "DIY"],
+    image_url: "https://images.unsplash.com/photo-1605540436563-5bca919ae766",
+    tags: ["organization", "stationery", "clips"],
+    uses: [
       {
-        name: "Socks (Single)",
-        slug: "socks-single",
-        category: "household",
-        image_url: "", 
-        tags: ["household", "clothing", "crafts", "diy"],
-        uses: [
-          {
-            title: "Dust Rag",
-            description: "Slip an old sock over your hand to easily dust surfaces, blinds, and intricate objects.",
-            difficulty: "Easy",
-            votes_yes: 15, 
-            votes_no: 1,
-            image_url: "",
-            affiliateLink: "https://www.amazon.com/s?k=microfiber+dusting+cloths"
-          },
-          {
-            title: "Whiteboard Eraser",
-            description: "A clean, old sock works surprisingly well as a whiteboard eraser.",
-            difficulty: "Easy",
-            votes_yes: 10, 
-            votes_no: 0,
-          },
-          {
-            title: "Protect Fragile Items",
-            description: "Use socks to cushion fragile items like ornaments or glassware during storage or moving.",
-            difficulty: "Easy",
-            votes_yes: 8, 
-            votes_no: 0,
-          },
-          {
-            title: "DIY Stress Ball",
-            description: "Fill a sock with rice or flour, tie it off, and you have a simple stress ball.",
-            difficulty: "Medium",
-            votes_yes: 12, 
-            votes_no: 2,
-            image_url: "",
-          },
-          {
-            title: "Shoe Polisher",
-            description: "Apply shoe polish with one sock and buff to a shine with another clean one.",
-            difficulty: "Easy",
-            votes_yes: 7, 
-            votes_no: 0,
-          }
-        ]
+        title: "Cable Organizer",
+        description: "Clip cables to the edge of your desk to prevent tangling and keep them organized.",
+        difficulty: "Easy",
+        votes_yes: 42,
+        votes_no: 2
       },
       {
-        name: "Duct Tape",
-        slug: "duct-tape",
-        category: "household",
-        image_url: "",
-        tags: ["household", "repairs", "diy", "crafts"],
-        uses: [
-          {
-            title: "Temporary Hem",
-            description: "Quickly hem pants or skirts by folding the fabric and securing it with duct tape on the inside.",
-            difficulty: "Easy",
-            votes_yes: 22, 
-            votes_no: 3,
-          },
-          {
-            title: "Lint Remover",
-            description: "Wrap duct tape around your hand, sticky side out, to pick up lint and pet hair from clothing or furniture.",
-            difficulty: "Easy",
-            votes_yes: 18, 
-            votes_no: 1,
-            image_url: "",
-          },
-          {
-            title: "Jar Opener Grip",
-            description: "Wrap duct tape around a stubborn jar lid for extra grip to open it easily.",
-            difficulty: "Easy",
-            votes_yes: 14, 
-            votes_no: 0,
-          },
-          {
-            title: "DIY Wallet",
-            description: "Create a surprisingly durable wallet by folding and layering duct tape.",
-            difficulty: "Hard",
-            votes_yes: 9, 
-            votes_no: 4,
-          },
-          {
-            title: "Splinter Removal",
-            description: "Place a small piece of duct tape over a splinter, press firmly, then pull it off quickly. The splinter may come out with the tape.",
-            difficulty: "Medium",
-            votes_yes: 11, 
-            votes_no: 1,
-          }
-        ]
+        title: "Smartphone Stand",
+        description: "Arrange two large binder clips to create a sturdy phone stand for watching videos.",
+        difficulty: "Medium",
+        votes_yes: 38,
+        votes_no: 5
       },
       {
-        name: "Lemon Juice",
-        slug: "lemon-juice",
-        category: "food",
-        image_url: "",
-        tags: ["food", "cleaning", "household", "beauty"],
-        uses: [
-          {
-            title: "Natural Bleach Alternative",
-            description: "Add lemon juice to your white laundry load to brighten whites. Sunlight enhances the effect.",
-            difficulty: "Easy",
-            votes_yes: 25, 
-            votes_no: 2,
-          },
-          {
-            title: "Cutting Board Sanitizer",
-            description: "Rub half a lemon over wooden or plastic cutting boards to disinfect and remove odors.",
-            difficulty: "Easy",
-            votes_yes: 20, 
-            votes_no: 0,
-            image_url: "",
-          },
-          {
-            title: "Glass Cleaner",
-            description: "Mix lemon juice with water in a spray bottle for a streak-free glass cleaner.",
-            difficulty: "Easy",
-            votes_yes: 15, 
-            votes_no: 1,
-          },
-          {
-            title: "Prevent Browning of Fruits",
-            description: "Sprinkle lemon juice on cut apples, avocados, or bananas to prevent them from browning.",
-            difficulty: "Easy",
-            votes_yes: 30, 
-            votes_no: 0,
-          },
-          {
-            title: "DIY Invisible Ink",
-            description: "Write a message with lemon juice on paper. When the paper is heated (e.g., near a lightbulb), the message appears.",
-            difficulty: "Medium",
-            votes_yes: 10, 
-            votes_no: 3,
-          }
-        ]
+        title: "Bag Seal",
+        description: "Use large binder clips to keep chip bags and other food packages fresh.",
+        difficulty: "Easy",
+        votes_yes: 56,
+        votes_no: 1
       },
       {
-        name: "Banana Peels",
-        slug: "banana-peels",
-        category: "food",
-        image_url: "",
-        tags: ["food", "gardening", "household", "beauty"],
-        uses: [
-          {
-            title: "Plant Fertilizer",
-            description: "Bury banana peels in your garden soil or soak them in water to make a nutrient-rich 'tea' for your plants.",
-            difficulty: "Easy",
-            votes_yes: 28, 
-            votes_no: 1,
-            image_url: "",
-          },
-          {
-            title: "Shoe Polish",
-            description: "Rub the inside of a banana peel on leather shoes, then buff with a soft cloth for a quick shine.",
-            difficulty: "Easy",
-            votes_yes: 12, 
-            votes_no: 3,
-          },
-          {
-            title: "Silver Polish",
-            description: "Blend banana peels with a little water to make a paste. Rub onto tarnished silver, then wipe clean.",
-            difficulty: "Medium",
-            votes_yes: 9, 
-            votes_no: 2,
-          },
-          {
-            title: "Soothe Insect Bites",
-            description: "Rub the inside of a banana peel on an insect bite to help relieve itching and inflammation.",
-            difficulty: "Easy",
-            votes_yes: 15, 
-            votes_no: 1,
-          },
-          {
-            title: "Compost Booster",
-            description: "Add banana peels to your compost bin; they decompose quickly and add valuable nutrients.",
-            difficulty: "Easy",
-            votes_yes: 22, 
-            votes_no: 0,
-          }
-        ]
+        title: "Bookmark",
+        description: "Mark your page by clipping it with a small binder clip that won't fall out.",
+        difficulty: "Easy",
+        votes_yes: 27,
+        votes_no: 0
       },
       {
-        name: "Excel",
-        slug: "excel",
-        category: "tech",
-        image_url: "",
-        tags: ["tech", "productivity", "organization", "tools"],
-        uses: [
-          {
-            title: "Project Management Tool",
-            description: "Use Excel to create Gantt charts, track tasks, manage timelines, and allocate resources for projects.",
-            difficulty: "Medium",
-            votes_yes: 18, 
-            votes_no: 1,
-          },
-          {
-            title: "Personal Budget Tracker",
-            description: "Create a detailed personal budget, track expenses, and visualize spending habits with charts.",
-            difficulty: "Easy",
-            votes_yes: 25, 
-            votes_no: 0,
-            image_url: "",
-          },
-          {
-            title: "Meal Planner & Recipe Organizer",
-            description: "Organize recipes, plan weekly meals, and generate shopping lists automatically.",
-            difficulty: "Medium",
-            votes_yes: 14, 
-            votes_no: 2,
-          },
-          {
-            title: "Fitness Log & Progress Tracker",
-            description: "Log workouts, track measurements, and monitor fitness progress over time with graphs.",
-            difficulty: "Easy",
-            votes_yes: 16, 
-            votes_no: 1,
-          },
-          {
-            title: "Simple CRM (Customer Relationship Management)",
-            description: "For small businesses, Excel can be used to manage customer contacts, track interactions, and sales pipelines.",
-            difficulty: "Medium",
-            votes_yes: 10, 
-            votes_no: 3,
-          }
-        ]
+        title: "Key Holder",
+        description: "Mount binder clips near your door to hang keys in an easily accessible spot.",
+        difficulty: "Easy",
+        votes_yes: 33,
+        votes_no: 2
       }
-    ];
-  
+    ]
+  },
+  {
+    name: "Baking Soda",
+    slug: "baking-soda",
+    categories: ["household", "eco living", "cleaning"],
+    image_url: "https://images.pexels.com/photos/5947036/pexels-photo-5947036.jpeg",
+    tags: ["cleaning", "deodorizer", "natural"],
+    uses: [
+      {
+        title: "Refrigerator Deodorizer",
+        description: "Place an open box of baking soda in your fridge to neutralize odors.",
+        difficulty: "Easy",
+        votes_yes: 89,
+        votes_no: 1
+      },
+      {
+        title: "Gentle Scrub",
+        description: "Mix with water to create a non-abrasive cleaner for sinks and countertops.",
+        difficulty: "Easy",
+        votes_yes: 76,
+        votes_no: 2
+      },
+      {
+        title: "Carpet Freshener",
+        description: "Sprinkle on carpets, let sit, then vacuum to remove odors.",
+        difficulty: "Easy",
+        votes_yes: 64,
+        votes_no: 3
+      },
+      {
+        title: "Drain Cleaner",
+        description: "Combine with vinegar for a natural drain cleaning solution.",
+        difficulty: "Medium",
+        votes_yes: 58,
+        votes_no: 7
+      },
+      {
+        title: "Silver Polish",
+        description: "Make a paste with water to polish tarnished silverware.",
+        difficulty: "Medium",
+        votes_yes: 42,
+        votes_no: 4
+      }
+    ]
+  },
+  {
+    name: "Pool Noodle",
+    slug: "pool-noodle",
+    categories: ["DIY", "household", "furniture"],
+    image_url: "https://images.unsplash.com/photo-1595871464695-0df208c8ce41",
+    tags: ["cushioning", "kids", "crafts"],
+    uses: [
+      {
+        title: "Edge Protector",
+        description: "Cut lengthwise and slide onto sharp table edges to prevent injuries.",
+        difficulty: "Easy",
+        votes_yes: 47,
+        votes_no: 2
+      },
+      {
+        title: "DIY Kickboard",
+        description: "Use as a swimming aid for kids learning to stay afloat.",
+        difficulty: "Easy",
+        votes_yes: 38,
+        votes_no: 1
+      },
+      {
+        title: "Cable Organizer",
+        description: "Cut into sections and slit to hold and organize cables.",
+        difficulty: "Medium",
+        votes_yes: 29,
+        votes_no: 5
+      },
+      {
+        title: "Door Stopper",
+        description: "Cut to size and place under doors to prevent slamming.",
+        difficulty: "Easy",
+        votes_yes: 33,
+        votes_no: 0
+      },
+      {
+        title: "Knee Pad",
+        description: "Use when gardening to protect your knees from hard surfaces.",
+        difficulty: "Easy",
+        votes_yes: 27,
+        votes_no: 3
+      }
+    ]
+  },
+  {
+    name: "PVC Pipe",
+    slug: "pvc-pipe",
+    categories: ["construction", "DIY", "gardening"],
+    image_url: "https://images.pexels.com/photos/221027/pexels-photo-221027.jpeg",
+    tags: ["plumbing", "building", "projects"],
+    uses: [
+      {
+        title: "Shoe Organizer",
+        description: "Cut into sections and mount on the wall to store shoes vertically.",
+        difficulty: "Medium",
+        votes_yes: 52,
+        votes_no: 6
+      },
+      {
+        title: "Garden Trellis",
+        description: "Assemble into structures to support climbing plants.",
+        difficulty: "Hard",
+        votes_yes: 38,
+        votes_no: 8
+      },
+      {
+        title: "Tool Organizer",
+        description: "Mount cut pipes in your garage to hold long-handled tools.",
+        difficulty: "Medium",
+        votes_yes: 47,
+        votes_no: 3
+      },
+      {
+        title: "Kids Play Tunnel",
+        description: "Create an outdoor play tunnel by connecting large diameter pipes.",
+        difficulty: "Hard",
+        votes_yes: 29,
+        votes_no: 5
+      },
+      {
+        title: "Outdoor Curtain Rod",
+        description: "Use as a durable, weather-resistant curtain rod for patios.",
+        difficulty: "Easy",
+        votes_yes: 33,
+        votes_no: 2
+      }
+    ]
+  },
+  {
+    name: "Mason Jars",
+    slug: "mason-jars",
+    categories: ["household", "storage", "eco living"],
+    image_url: "https://images.unsplash.com/photo-1571260899211-3e9a72a1d9b1",
+    tags: ["containers", "preserving", "decor"],
+    uses: [
+      {
+        title: "Dry Food Storage",
+        description: "Store grains, pasta, and other dry goods in airtight jars.",
+        difficulty: "Easy",
+        votes_yes: 78,
+        votes_no: 1
+      },
+      {
+        title: "DIY Lantern",
+        description: "Place candles or fairy lights inside for rustic outdoor lighting.",
+        difficulty: "Easy",
+        votes_yes: 62,
+        votes_no: 3
+      },
+      {
+        title: "Herb Garden",
+        description: "Grow small herbs on your windowsill with proper drainage.",
+        difficulty: "Medium",
+        votes_yes: 54,
+        votes_no: 7
+      },
+      {
+        title: "Bathroom Organizer",
+        description: "Store cotton balls, q-tips, and other small items.",
+        difficulty: "Easy",
+        votes_yes: 47,
+        votes_no: 2
+      },
+      {
+        title: "Salad To-Go",
+        description: "Layer ingredients for portable, fresh salads.",
+        difficulty: "Easy",
+        votes_yes: 63,
+        votes_no: 4
+      }
+    ]
+  }
+];

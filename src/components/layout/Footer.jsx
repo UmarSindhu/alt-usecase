@@ -36,7 +36,7 @@ const Footer = () => {
         </div>
         <Separator className="my-6" />
         <div className="text-center text-sm text-muted-foreground">
-          &copy; {currentYear} AltUseCase. All rights reserved. Built By <a href="https://sindhusolutions.com">Sindhu Solutions</a>
+          &copy; {currentYear} AltUseCase. All rights reserved. Built By <a href="https://sindhusolutions.com" target="_blank">Sindhu Solutions</a>
         </div>
       </div>
     </footer>

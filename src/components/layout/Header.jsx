@@ -7,7 +7,7 @@
     import { useTheme } from '@/components/ThemeProvider';
     import { motion, AnimatePresence } from 'framer-motion';
     import { useToast } from '@/components/ui/use-toast';
-    import { getItems, getRandomItem, generateAndStoreItem } from '@/lib/useCaseService';
+    import { getItems, getRandomItem, generateAndStoreItem } from '@/lib/services/itemService';
     import { SearchCommand } from '@/components/SearchCommand';
     import AdPlaceholder from '@/components/AdPlaceholder';
     import { useAuth } from '@/hooks/useAuth';
@@ -26,52 +26,13 @@
         setIsSearchOpen(true);
       };
 
-      const handleGenerate = async () => {
-        if (!searchTerm.trim() || searchTerm.trim().length < 3) {
-          toast({
-            title: "Invalid Search",
-            description: "Please enter at least 3 characters to generate content.",
-            variant: "destructive"
-          });
-          return;
-        }
-
-        toast({
-          title: "Generating Content",
-          description: `Creating alternative uses for "${searchTerm}"...`
-        });
-
-        try {
-          const newItem = await generateAndStoreItem(searchTerm);
-          if (newItem) {
-            navigate(`/use/${newItem.slug}`);
-            setSearchTerm('');
-          } else {
-            toast({
-              title: "Generation Failed",
-              description: "Could not generate content. The item might already exist.",
-              variant: "destructive"
-            });
-          }
-        } catch (error) {
-          toast({
-            title: "Error",
-            description: "Failed to generate content. Please try again.",
-            variant: "destructive"
-          });
-        }
-      };
-
-      const handleSurpriseMe = () => {
-        const randomItem = getRandomItem();
-        if (randomItem) {
+      const handleSurpriseMe = async () => {
+        toast({ title: "Finding a surprise..."});
+        const randomItem = await getRandomItem();
+        if (randomItem && randomItem.slug) {
           navigate(`/use/${randomItem.slug}`);
         } else {
-          toast({
-            title: "No items available",
-            description: "Could not find an item to surprise you with.",
-            variant: "destructive",
-          });
+          toast({ title: "Oops!", description: "Couldn't find an item to surprise you with right now.", variant: "destructive"});
         }
         if (isMobileMenuOpen) setIsMobileMenuOpen(false);
       };
