@@ -140,13 +140,13 @@ const HeroSearch = ({ onSearchItemsUpdate }) => {
           <Input
             type="search"
             placeholder="e.g., 'banana peel', 'Excel', 'duct tape'..."
-            className="h-12 text-lg pl-12 pr-[160px] sm:pr-[180px] py-3 rounded-full shadow-md focus:shadow-lg transition-shadow"
+            className="h-12 text-lg pl-12 py-3 rounded-full shadow-md focus:shadow-lg transition-shadow"
             value={searchTerm}
             onChange={(e) => handleSearchChange(e.target.value)}
             disabled={isGenerating}
           />
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-5 w-5 text-muted-foreground" />
-          {searchTerm.length >= 3 && searchResults.length === 0 && isSearching && (
+          {/* {searchTerm.length >= 3 && searchResults.length === 0 && isSearching && (
             <Button
               className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full text-xs sm:text-sm px-2 sm:px-3"
               onClick={handleGenerateItem}
@@ -156,7 +156,7 @@ const HeroSearch = ({ onSearchItemsUpdate }) => {
               <Wand2 className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" />
               Generate
             </Button>
-          )}
+          )} */}
         </div>
 
         <AnimatePresence>
@@ -197,7 +197,7 @@ const HeroSearch = ({ onSearchItemsUpdate }) => {
                 </div>
               ) : searchTerm.length > 0 && (
                 <div className="p-4 text-center">
-                  <p className="text-sm text-muted-foreground mb-2">No results found for "{searchTerm.trim()}"</p>
+                  <p className="text-sm text-muted-foreground mb-2">Oops! can't find "{searchTerm.trim()} in our Database"</p>
                   {searchTerm.length >= 3 && (
                     <Button 
                       variant="ghost" 
@@ -206,7 +206,7 @@ const HeroSearch = ({ onSearchItemsUpdate }) => {
                       disabled={isGenerating}
                     >
                       <Wand2 className="mr-2 h-4 w-4" />
-                      Generate with AI
+                      Search using our AI
                     </Button>
                   )}
                 </div>

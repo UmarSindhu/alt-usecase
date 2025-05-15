@@ -117,14 +117,14 @@ export function SearchCommand({ open, setOpen }) {
           {isLoading ? "Loading..." : 
             (searchTerm.trim().length >= 3 ? (
               <div className="py-6 text-center text-sm">
-                No results found for "{searchTerm.trim()}".
+                Oops! can't find "{searchTerm.trim()}" in our Database.
                   <Button 
                     variant="link" 
                     onClick={handleGenerate} 
                     className="mt-2 text-primary hover:text-primary/80" 
                     disabled={isLoading}
                   >
-                    <Wand2 className="mr-2 h-4 w-4" /> Generate New Item
+                    <Wand2 className="mr-2 h-4 w-4" /> Search using our AI
                   </Button>
               </div>
             ) : "Type to search items or use commands")
