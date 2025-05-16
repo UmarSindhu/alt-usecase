@@ -122,7 +122,7 @@ const UseCasePage = () => {
               src={item.image_url} />
           )}
           <div className="relative z-10">
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-3 text-foreground">{item.name}</h1>
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-2 sm:mb-3 text-foreground capitalize">{item.name}</h1>
             <p className="text-md sm:text-lg text-muted-foreground max-w-2xl">
               {item.seo_description || `Explore ${item.uses?.length || 0} creative and practical alternative uses for ${item.name}.`}
             </p>
@@ -167,10 +167,10 @@ const UseCasePage = () => {
                       )}
                       <div className="flex items-center space-x-1 sm:space-x-2">
                         <Button variant="ghost" size="sm" onClick={() => handleVote(useCase.id, 'yes')} className="text-xs sm:text-sm">
-                          <ThumbsUp className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" /> Yes ({useCase.votes_yes || 0})
+                          <ThumbsUp className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" /> Vote up ({useCase.votes_yes || 0})
                         </Button>
                         <Button variant="ghost" size="sm" onClick={() => handleVote(useCase.id, 'no')} className="text-xs sm:text-sm">
-                          <ThumbsDown className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" /> No ({useCase.votes_no || 0})
+                          <ThumbsDown className="mr-1 sm:mr-2 h-3 w-3 sm:h-4 sm:w-4" /> Vote down ({useCase.votes_no || 0})
                         </Button>
                       </div>
                     </CardContent>

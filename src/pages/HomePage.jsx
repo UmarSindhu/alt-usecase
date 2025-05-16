@@ -24,7 +24,7 @@
         try {
           const [fetchedItems, fetchedCategories] = await Promise.all([
             getRecentItems(),
-            fetchCategories()
+            fetchCategories(10)
           ]);
           setItems(fetchedItems);
           setCategories(fetchedCategories);
@@ -101,7 +101,7 @@
               </div>
             ) : (
               <>
-                <CategoryGrid categories={categories} />
+                <CategoryGrid categories={categories} showBrowseButton={true} />
                 <FeaturedItemsGrid items={items} />
               </>
             )}

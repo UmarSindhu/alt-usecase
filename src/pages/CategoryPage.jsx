@@ -106,7 +106,7 @@ const CategoryPage = () => {
                 >
                   <Card className="h-full hover:shadow-xl transition-shadow duration-300 ease-in-out group flex flex-col">
                     <CardHeader>
-                      <CardTitle className="group-hover:text-primary transition-colors text-xl sm:text-2xl">{item.name}</CardTitle>
+                      <CardTitle className="group-hover:text-primary transition-colors text-xl sm:text-2xl capitalize">{item.name}</CardTitle>
                       <CardDescription>{item.uses?.length || 0} alternative uses</CardDescription>
                     </CardHeader>
                     <CardContent className="flex-grow">

@@ -8,6 +8,7 @@ import { Zap } from 'lucide-react';
 import AdPlaceholder from '@/components/AdPlaceholder';
 
 const FeaturedItemsGrid = ({ items }) => {
+  console.log(items);
   return (
     <section>
       <h2 className="text-3xl font-semibold mb-6 flex items-center">
@@ -25,8 +26,20 @@ const FeaturedItemsGrid = ({ items }) => {
               transition={{ delay: index * 0.05 }}
             >
               <Card className="h-full hover:shadow-xl transition-shadow duration-300 ease-in-out group flex flex-col">
+                {/* Image at the top */}
+                {item.image_url && (
+                  <div className="relative w-full h-40 overflow-hidden rounded-t-lg">
+                    <img
+                      src={item.image_url}
+                      alt={item.name}
+                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-background/80 to-transparent" />
+                  </div>
+                )}
+                
                 <CardHeader>
-                  <CardTitle className="group-hover:text-primary transition-colors">{item.name}</CardTitle>
+                  <CardTitle className="group-hover:text-primary transition-colors capitalize">{item.name}</CardTitle>
                   <CardDescription>{item.uses?.length || 0} alternative uses</CardDescription>
                 </CardHeader>
                 <CardContent className="flex-grow">

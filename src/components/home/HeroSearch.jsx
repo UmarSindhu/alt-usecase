@@ -197,16 +197,16 @@ const HeroSearch = ({ onSearchItemsUpdate }) => {
                 </div>
               ) : searchTerm.length > 0 && (
                 <div className="p-4 text-center">
-                  <p className="text-sm text-muted-foreground mb-2">Oops! can't find "{searchTerm.trim()} in our Database"</p>
+                  {!isGenerating && (<p className="text-sm text-muted-foreground mb-2">Oops! can't find "{searchTerm.trim()} in our Database"</p>
+                  )}
                   {searchTerm.length >= 3 && (
                     <Button 
-                      variant="ghost" 
                       onClick={handleGenerateItem} 
-                      className="w-full text-primary hover:bg-primary/10"
+                      className="w-full"
                       disabled={isGenerating}
                     >
                       <Wand2 className="mr-2 h-4 w-4" />
-                      Search using our AI
+                      {isGenerating ? 'AI Search in progress. Please wait..' : 'Search using our AI'}
                     </Button>
                   )}
                 </div>

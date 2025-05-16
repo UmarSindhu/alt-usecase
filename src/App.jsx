@@ -12,6 +12,7 @@ import UseCasePage from '@/pages/UseCasePage';
 import CategoryPage from '@/pages/CategoryPage';
 import AdminDashboardPage from '@/pages/AdminDashboardPage';
 import LoginPage from '@/pages/LoginPage';
+import CategoriesPage from '@/pages/CategoriesPage';
 import SuggestionsPage from '@/pages/SuggestionsPage';
 import AboutPage from '@/pages/AboutPage';
 import NotFoundPage from '@/pages/NotFoundPage';
@@ -54,6 +55,7 @@ const router = createBrowserRouter([
     children: [
       { index: true, element: <HomePage /> },
       { path: 'use/:slug', element: <UseCasePage /> },
+      { path: 'category', element: <CategoriesPage /> },
       { path: 'category/:categoryName', element: <CategoryPage /> },
       { path: 'about', element: <AboutPage /> },
       { path: 'suggestions', element: <SuggestionsPage /> },

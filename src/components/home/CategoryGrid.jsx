@@ -2,10 +2,10 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import { motion } from 'framer-motion';
 import { Button } from '@/components/ui/button';
-import { Tag, Package } from 'lucide-react';
+import { Blocks, Package } from 'lucide-react';
 import { CATEGORIES as DEFAULT_CATEGORIES_WITH_ICONS } from '@/lib/constants';
 
-const CategoryGrid = ({ categories }) => {
+const CategoryGrid = ({ categories, showBrowseButton=false }) => {
   const getCategoryIcon = (iconSource) => {
     if (!iconSource) return Package;
     if (typeof iconSource === 'string') {
@@ -19,10 +19,18 @@ const CategoryGrid = ({ categories }) => {
   
   return (
     <section>
-      <h2 className="text-3xl font-semibold mb-6 flex items-center">
-        <Tag className="mr-3 h-7 w-7 text-primary" />
-        Browse by Category
-      </h2>
+      <div className="flex items-center justify-between mb-6">
+        <h2 className="text-3xl font-semibold flex items-center">
+          <Blocks className="mr-3 h-7 w-7 text-primary" />
+          Browse by Category
+        </h2>
+        {showBrowseButton && (
+          <Button asChild className="text-md">
+            <Link to="/category">Browse All</Link>
+          </Button>
+        )}
+      </div>
+      
       <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
         {(categories || []).map((category, index) => {
           const IconComponent = getCategoryIcon(category.icon_name || category.icon);

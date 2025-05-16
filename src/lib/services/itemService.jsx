@@ -21,7 +21,6 @@ export const getItems = async () => {
     console.error('Error fetching items:', error);
     return [];
   }
-  console.log('Data: ', data)
   return data.map(item => ({
     ...item,
     tags: item.tags.map(t => t.tags.name),
@@ -47,7 +46,6 @@ export const getRecentItems = async () => {
     console.error('Error fetching items:', error);
     return [];
   }
-  console.log('Data: ', data)
   return data.map(item => ({
     ...item,
     tags: item.tags.map(t => t.tags.name),

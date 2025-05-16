@@ -3,7 +3,7 @@
     import { Link, useNavigate } from 'react-router-dom';
     import { Button } from '@/components/ui/button';
     import { Input } from '@/components/ui/input';
-    import { Search, Moon, Sun, Zap, Menu, X, Wand2, Info, Lightbulb } from 'lucide-react';
+    import { Search, Moon, Sun, Zap, Menu, X, Wand2, Info, Lightbulb, Blocks } from 'lucide-react';
     import { useTheme } from '@/components/ThemeProvider';
     import { motion, AnimatePresence } from 'framer-motion';
     import { useToast } from '@/components/ui/use-toast';
@@ -43,6 +43,7 @@
 
       const navLinks = [
         { name: 'Home', path: '/', icon: null },
+        { name: 'Categories', path: '/category', icon: <Blocks className="mr-2 h-4 w-4" /> },
         { name: 'About', path: '/about', icon: <Info className="mr-2 h-4 w-4" /> },
         { name: 'Suggestions', path: '/suggestions', icon: <Lightbulb className="mr-2 h-4 w-4" /> },
       ];
@@ -53,7 +54,7 @@
           <div className="container flex h-16 max-w-screen-2xl items-center justify-between">
             <Link to="/" className="mr-6 flex items-center space-x-2">
               <Zap className="h-6 w-6 text-primary" />
-              <span className="font-bold text-lg gradient-text">AltUse</span>
+              <span className="font-bold text-lg gradient-text">AltUseCase</span>
             </Link>
             
             <div className="hidden md:flex flex-grow items-center space-x-4">
@@ -71,7 +72,7 @@
                 </Button>
               </form>
               <nav className="flex items-center space-x-1">
-                {navLinks.filter(link => link.name === 'About' || link.name === 'Suggestions').map(link => (
+                {navLinks.filter(link => link.name === 'Categories' || link.name === 'About' || link.name === 'Suggestions').map(link => (
                    <Button key={link.name} variant="ghost" asChild>
                      <Link to={link.path}>{link.icon}{link.name}</Link>
                    </Button>

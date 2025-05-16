@@ -94,6 +94,7 @@
         { key: 'ad_slot_usecase_page_bottom_enabled', label: 'Use Case Page Bottom Ad' },
         { key: 'ad_slot_category_page_top_enabled', label: 'Category Page Top Ad' },
         { key: 'ad_slot_category_page_inlist_enabled', label: 'Category Page In-List Ads' },
+        { key: 'ad_slot_usecase_aside_bottom_enabled', label: 'Usecase Page Aside Ads' },
       ];
 
       if (isLoadingAdSettings) return <p>Loading ad settings...</p>;

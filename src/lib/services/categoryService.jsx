@@ -45,32 +45,37 @@
       });
     };
   
-    export const getCategoriesWithCounts = async () => {
-    // Get categories with item counts using a join query
-    const { data, error } = await supabase
-      .from('categories')
-      .select(`
-        *,
-        item_categories (
-          count
-        )
-      `);
+    export const getCategoriesWithCounts = async (limit = 'all') => {
+      // Always fetch all categories to ensure accurate sorting
+      const { data, error } = await supabase
+        .from('categories')
+        .select(`
+          *,
+          item_categories (
+            count
+          )
+        `);
 
-    if (error) {
-      console.error('Error fetching categories with counts:', error);
-      return DEFAULT_CATEGORIES_WITH_ICONS.map(c => ({
-        ...c, 
-        icon: c.icon || Package,
-        item_count: 0
-      }));
-    }
+      if (error) {
+        console.error('Error fetching categories with counts:', error);
+        return DEFAULT_CATEGORIES_WITH_ICONS.map(c => ({
+          ...c, 
+          icon: c.icon || Package,
+          item_count: 0
+        }));
+      }
 
-    return data.map(c => {
-      const iconComponent = DEFAULT_CATEGORIES_WITH_ICONS.find(dc => dc.slug === c.slug)?.icon || Package;
-      return {
-        ...c,
-        icon: iconComponent,
-        item_count: c.item_categories[0]?.count || 0
-      };
-    });
-};
+      const mapped = data.map(c => {
+        const iconComponent = DEFAULT_CATEGORIES_WITH_ICONS.find(dc => dc.slug === c.slug)?.icon || Package;
+        return {
+          ...c,
+          icon: iconComponent,
+          item_count: c.item_categories[0]?.count || 0
+        };
+      });
+
+      const sorted = mapped.sort((a, b) => b.item_count - a.item_count);
+
+      // Apply limit only after sorting
+      return limit !== 'all' && Number.isInteger(limit) ? sorted.slice(0, limit) : sorted;
+    };
