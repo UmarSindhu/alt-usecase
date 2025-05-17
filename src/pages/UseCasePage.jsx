@@ -89,7 +89,6 @@ const UseCasePage = () => {
   if (!item) {
     return <NotFoundPage />;
   }
-  console.log(item);
   return (
     <>
       <Helmet>

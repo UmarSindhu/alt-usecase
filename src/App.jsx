@@ -11,6 +11,7 @@ import MainLayout from '@/components/layout/MainLayout';
 import HomePage from '@/pages/HomePage';
 import UseCasePage from '@/pages/UseCasePage';
 import CategoryPage from '@/pages/CategoryPage';
+import TagPage from '@/pages/TagPage';
 import AdminDashboardPage from '@/pages/AdminDashboardPage';
 import LoginPage from '@/pages/LoginPage';
 import CategoriesPage from '@/pages/CategoriesPage';
@@ -79,6 +80,7 @@ const router = createBrowserRouter([
       { path: 'use/:slug', element: <UseCasePage /> },
       { path: 'category', element: <CategoriesPage /> },
       { path: 'category/:categoryName', element: <CategoryPage /> },
+      { path: 'tag/:tagName', element: <TagPage /> },
       { path: 'about', element: <AboutPage /> },
       { path: 'suggestions', element: <SuggestionsPage /> },
       { 

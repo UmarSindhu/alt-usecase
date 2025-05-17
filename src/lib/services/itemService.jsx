@@ -116,6 +116,40 @@ export const getItemsByCategory = async (categorySlug) => {
   }));
 };
 
+export const getItemsByTag = async (tagName) => {
+  const { data: tag, error: tagError } = await supabase
+    .from('tags')
+    .select('id')
+    .eq('name', tagName)
+    .single();
+
+  if (tagError || !tag) {
+    console.error('Error fetching tag or tag not found:', tagError);
+    return [];
+  }
+
+  const { data, error } = await supabase
+    .from('item_tags')
+    .select(`
+      items (
+        *,
+        uses:use_cases(*),
+        tags:item_tags(tags(name))
+      )
+    `)
+    .eq('tag_id', tag.id);
+    
+  if (error) {
+    console.error('Error fetching items by tag:', error);
+    return [];
+  }
+  return data.map(it => ({
+    ...it.items,
+    tags: it.items.tags.map(t => t.tags.name),
+    uses: it.items.uses || [], 
+  }));
+};
+
 export const generateAndStoreItem = async (itemName) => {
   try {
     const response = await fetch('/api/generateItem', {

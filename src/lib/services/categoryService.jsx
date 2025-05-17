@@ -44,7 +44,15 @@
         return {...c, icon: iconComponent };
       });
     };
-  
+    
+    export const getTags = async () => {
+      const { data, error } = await supabase.from('tags').select('*');
+      if (error) {
+        console.error('Error fetching tags from Supabase:', error);
+      }
+      return data;
+    };
+
     export const getCategoriesWithCounts = async (limit = 'all') => {
       // Always fetch all categories to ensure accurate sorting
       const { data, error } = await supabase
