@@ -60,6 +60,8 @@ const generateAndStoreItem = async (itemName) => {
   // --- 2. AI Call for Uses + Categories ---
   let aiUses = [];
   let suggestedCategories = [];
+  let suggestedTags = [];
+  let affiliateLink = '';
   try {
     // Get category names from the CATEGORIES array
     const categoryNames = CATEGORIES.map(c => c.name);
@@ -78,15 +80,18 @@ const generateAndStoreItem = async (itemName) => {
           content: `For "${itemName}":
             1. Generate 10-15 alternative uses as JSON array
             2. Suggest 1-3 categories from: ${categoryNames.join(', ')}
-
+            3. Suggest 3-4 tags
+            4. Generate 1 affiliate link from Amazon for each use
             Return ONLY this JSON format:
             {
               "uses": [{
                 "title": "Use 1",
                 "description": "25-45 words description", 
-                "difficulty": "Easy/Medium/Hard"
+                "difficulty": "Easy/Medium/Hard",
+                "affiliate_link": "https://www.amazon.com/s?k=Use+1"
               }],
-              "categories": ["Category1", "Category2"]
+              "categories": ["Category1", "Category2"],
+              "tags": ["tag1", "tag2"],
             }`
         }]
       })
@@ -107,7 +112,8 @@ const generateAndStoreItem = async (itemName) => {
 
     aiUses = Array.isArray(parsed?.uses) ? parsed.uses : [];
     suggestedCategories = Array.isArray(parsed?.categories) ? parsed.categories : [];
-
+    suggestedTags = Array.isArray(parsed?.tags) ? parsed.tags : [];
+    affiliateLink = `https://www.amazon.com/s?k=${itemName}`;
   } catch (error) {
     console.error("AI API error:", error);
     aiUses = Array.from({ length: 3 }, (_, i) => ({
@@ -118,6 +124,7 @@ const generateAndStoreItem = async (itemName) => {
       votes_no: 0
     }));
     suggestedCategories = ['DIY'];
+    suggestedTags = ['DIY', 'Creative Ideas'];
   }
 
   // --- 3. Insert Item ---
@@ -127,9 +134,11 @@ const generateAndStoreItem = async (itemName) => {
       name: itemName,
       slug,
       image_url: imageUrl,
+      affiliate_link: affiliateLink,
       attribution: pexelsAttribution,
       seo_title: `Uses for ${itemName}`,
-      seo_description: `Creative ways to use ${itemName}`
+      seo_description: `Creative ways to use ${itemName}`,
+      canonical_url: `/use/${itemName}`
     })
     .select()
     .single();
@@ -164,6 +173,23 @@ const generateAndStoreItem = async (itemName) => {
         .insert(categories.map(c => ({ 
           item_id: newItem.id, 
           category_id: c.id 
+        })));
+    }
+  }
+
+  // --- 5. Assign Tags ---
+  if (suggestedTags.length > 0) {
+    const { data: tags } = await supabase
+      .from('tags')
+      .select('id')
+      .in('name', suggestedTags);
+
+    if (tags?.length > 0) {
+      await supabase
+        .from('item_tags')
+        .insert(tags.map(t => ({ 
+          item_id: newItem.id, 
+          tag_id: t.id 
         })));
     }
   }

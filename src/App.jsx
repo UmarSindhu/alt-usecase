@@ -1,9 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { 
   createBrowserRouter,
   RouterProvider,
   Outlet,
-  Navigate 
+  Navigate,
+  useLocation 
 } from 'react-router-dom';
 import { Helmet, HelmetProvider } from 'react-helmet-async';
 import MainLayout from '@/components/layout/MainLayout';
@@ -19,13 +20,32 @@ import NotFoundPage from '@/pages/NotFoundPage';
 import { Toaster } from '@/components/ui/toaster';
 import { ThemeProvider } from '@/components/ThemeProvider';
 import { AuthProvider, useAuth } from '@/hooks/useAuth';
+import { initGA, trackPageView } from '@/lib/utils/analytics';
+
+const TrackingWrapper = ({ children }) => {
+  const location = useLocation();
+
+  useEffect(() => {
+    if (import.meta.env.PROD) {
+      initGA();
+      trackPageView(window.location.pathname + window.location.search);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (import.meta.env.PROD) {
+      trackPageView(location.pathname + location.search);
+    }
+  }, [location]);
+
+  return children;
+};
 
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
   
   if (isLoading) {
     return <div className="flex justify-center items-center h-screen">
-      {/* Add your loading spinner here */}
       <p>Loading...</p>
     </div>;
   }
@@ -40,14 +60,16 @@ const router = createBrowserRouter([
       <HelmetProvider>
         <ThemeProvider defaultTheme="system" storageKey="altusecase-theme">
           <AuthProvider>
-            <Helmet>
-              <title>Alt Use Case</title>
-              <meta name="description" content="Discover alternative, creative, or practical use cases for any object, tool, or skill." />
-            </Helmet>
-            <MainLayout>
-              <Outlet />
-            </MainLayout>
-            <Toaster />
+            <TrackingWrapper>
+              <Helmet>
+                <title>Alt Use Case</title>
+                <meta name="description" content="Discover alternative, creative, or practical use cases for any object, tool, or skill." />
+              </Helmet>
+              <MainLayout>
+                <Outlet />
+              </MainLayout>
+              <Toaster />
+            </TrackingWrapper>
           </AuthProvider>
         </ThemeProvider>
       </HelmetProvider>

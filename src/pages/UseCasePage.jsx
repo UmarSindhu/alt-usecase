@@ -126,6 +126,20 @@ const UseCasePage = () => {
             <p className="text-md sm:text-lg text-muted-foreground max-w-2xl">
               {item.seo_description || `Explore ${item.uses?.length || 0} creative and practical alternative uses for ${item.name}.`}
             </p>
+            {item.affiliate_link && (
+              <Button variant="outline" size="sm" asChild className="bg-primary mt-3 sm:mb-4 text-xs sm:text-sm">
+                <a href={item.affiliate_link} target="_blank" rel="noopener noreferrer">
+                  Find Product <ExternalLink className="ml-1.5 h-3 w-3 sm:h-4 sm:w-4" />
+                </a>
+              </Button>
+            )}
+            {!item.affiliate_link && (
+            <Button variant="outline" size="sm" asChild className="bg-primary mt-3 sm:mb-4 text-xs sm:text-sm">
+              <a href={`https://www.amazon.com/s?k=${item.name}`} target="_blank" rel="noopener noreferrer nofollow">
+                Find Product <ExternalLink className="ml-1.5 h-3 w-3 sm:h-4 sm:w-4" />
+              </a>
+            </Button>
+            )}
           </div>
         </header>
 
@@ -161,6 +175,13 @@ const UseCasePage = () => {
                       {useCase.affiliate_link && (
                         <Button variant="outline" size="sm" asChild className="mb-3 sm:mb-4 text-xs sm:text-sm">
                           <a href={useCase.affiliate_link} target="_blank" rel="noopener noreferrer">
+                            Find Product <ExternalLink className="ml-1.5 h-3 w-3 sm:h-4 sm:w-4" />
+                          </a>
+                        </Button>
+                      )}
+                      {!useCase.affiliate_link && (
+                        <Button variant="outline" size="sm" asChild className="mb-3 sm:mb-4 text-xs sm:text-sm">
+                          <a href={`https://www.amazon.com/s?k=${useCase.title}`} target="_blank" rel="noopener noreferrer">
                             Find Product <ExternalLink className="ml-1.5 h-3 w-3 sm:h-4 sm:w-4" />
                           </a>
                         </Button>
@@ -229,6 +250,37 @@ const UseCasePage = () => {
                     <Badge variant="secondary" className="text-xs sm:text-sm">
                       Uncategorized
                     </Badge>
+                  )}
+                </CardContent>
+              </Card>
+            )}
+
+            {item.tags && (
+              <Card>
+                <CardHeader className="pb-2">
+                  <CardTitle className="text-lg sm:text-xl flex items-center">
+                    <Tag className="mr-2 h-4 w-4 sm:h-5 sm:w-5 text-primary" /> Tags
+                  </CardTitle>
+                </CardHeader>
+                <CardContent className="flex flex-wrap gap-2 pt-2">
+                  {item.tags && item.tags.length > 0 ? (
+                      item.tags.map((tag, index) => (
+                          <Button 
+                              key={index} 
+                              asChild
+                              variant="outline" 
+                              size="sm" 
+                              className="text-xs sm:text-sm capitalize"
+                          >
+                              <Link to={`/tag/${tag}`}>
+                                  {tag}
+                              </Link>
+                          </Button>
+                      ))
+                  ) : (
+                      <Badge variant="secondary" className="text-xs sm:text-sm">
+                          Uncategorized
+                      </Badge>
                   )}
                 </CardContent>
               </Card>

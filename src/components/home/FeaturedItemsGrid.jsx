@@ -8,7 +8,6 @@ import { Zap } from 'lucide-react';
 import AdPlaceholder from '@/components/AdPlaceholder';
 
 const FeaturedItemsGrid = ({ items }) => {
-  console.log(items);
   return (
     <section>
       <h2 className="text-3xl font-semibold mb-6 flex items-center">
