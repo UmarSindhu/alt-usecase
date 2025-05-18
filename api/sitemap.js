@@ -41,7 +41,6 @@ export default async function handler(req, res) {
       ${CATEGORIES.map(c => c.name `
         <url>
           <loc>https://www.altusecase.com/category/${c.name}</loc>
-          <lastmod>${new Date(usecase.updatedAt).toISOString()}</lastmod>
           <priority>0.7</priority>
           <changefreq>monthly</changefreq>
         </url>
