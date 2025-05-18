@@ -31,14 +31,14 @@ export default async function handler(req, res) {
       ${useCases.map(usecase => `
         <url>
           <loc>https://www.altusecase.com/use/${usecase.slug}</loc>
-          <lastmod>${new Date(usecase.updatedAt).toISOString()}</lastmod>
+          <lastmod>${getValidDate(usecase.updated_at)}</lastmod>
           <priority>0.7</priority>
           <changefreq>monthly</changefreq>
         </url>
       `).join('')}
 
       <!-- Category Pages -->
-      ${CATEGORIES.map(c => c.name `
+      ${CATEGORIES.map(c => `
         <url>
           <loc>https://www.altusecase.com/category/${c.name}</loc>
           <priority>0.7</priority>
@@ -57,7 +57,7 @@ export default async function handler(req, res) {
 async function fetchUseCases() {
   const { data, error } = await supabase
     .from('items')
-    .select('slug') // Only fetch the 'slug' field
+    .select('slug', 'updated_at') // Only fetch the 'slug' field
     .order('created_at', { ascending: false });
 
   if (error) {
@@ -65,6 +65,10 @@ async function fetchUseCases() {
     return [];
   }
 
-  // Returns an array of slugs: [{ slug: '...' }, ...]
-  return data.map(item => item.slug); // Extract just the slug strings
+  return data;
+}
+
+// Helper: Safely format dates (fallback to current time if invalid)
+function getValidDate(date) {
+  return date ? new Date(date).toISOString() : new Date().toISOString();
 }
