@@ -1,5 +1,4 @@
 import { supabase } from '@/lib/supabaseClient';
-//import { CATEGORIES } from '@/lib/constants';
 
 // API Keys (store in environment variables)
 // const PEXELS_API_KEY = import.meta.env.VITE_PUBLIC_PEXELS_API_KEY;
