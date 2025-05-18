@@ -19,5 +19,11 @@
       "src": "/(.*)",
       "dest": "/index.html"
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/sitemap",
+      "schedule": "0 0 * * *"
+    }
   ]
 }
