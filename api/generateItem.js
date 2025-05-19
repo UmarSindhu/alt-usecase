@@ -78,7 +78,7 @@ const generateAndStoreItem = async (itemName) => {
         messages: [{
           role: "user",
           content: `For "${itemName}":
-            1. Generate 10-15 alternative uses as JSON array. Each use should be around 
+            1. Generate 10-15 alternative uses as JSON array. Each use description should be around 40-45 words.
             2. Suggest 1-3 categories from: ${categoryNames.join(', ')}
             3. Suggest 3-4 tags
             4. Generate 1 affiliate link from Amazon for each use
