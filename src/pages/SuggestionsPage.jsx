@@ -8,7 +8,6 @@ import { Textarea } from '@/components/ui/textarea';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { useToast } from '@/components/ui/use-toast';
 import { Lightbulb, Send } from 'lucide-react';
-import { supabase } from '@/lib/supabaseClient';
 
 const SuggestionsPage = () => {
   const { toast } = useToast();
@@ -43,10 +42,17 @@ const SuggestionsPage = () => {
 
 
     try {
-      const { error } = await supabase.from('suggestions').insert([suggestionData]);
+      const response = await fetch('/api/service/suggestions/create', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(suggestionData),
+      });
 
-      if (error) {
-        throw error;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to submit suggestion');
       }
 
       toast({

@@ -73,17 +73,30 @@ export function SearchCommand({ open, setOpen }) {
       return;
     }
     setIsLoading(true);
-    toast({ title: "Generating Content...", description: `Creating uses for "${searchTerm}"` });
+    const loadingToast = toast({
+      title: "AI Magic in Progress!",
+      description: `Generating alternative uses for "${searchTerm}"...`,
+      duration: Infinity // Keep toast open until manually dismissed
+    });
     const newItem = await generateAndStoreItem(searchTerm);
     setIsLoading(false);
     if (newItem) {
+      loadingToast.dismiss();
+      toast({
+        title: "Success!",
+        description: `"${newItem.name}" has been added. Redirecting...`,
+        variant: "default",
+        duration: 3000
+      });
       runCommand(() => navigate(`/use/${newItem.slug}`));
       await loadItems();
     } else {
-      toast({ 
-        title: "Generation Failed", 
-        description: "Could not generate content.", 
-        variant: "destructive" 
+      loadingToast.dismiss();
+      toast({
+        title: "Generation Failed",
+        description: "Could not generate content. The item might already exist or an AI error occurred.",
+        variant: "destructive",
+        duration: 3000
       });
     }
   };
@@ -114,7 +127,12 @@ export function SearchCommand({ open, setOpen }) {
       />
       <CommandList>
         <CommandEmpty>
-          {isLoading ? "Loading..." : 
+          {isLoading ? (
+            <div className="flex items-center justify-center">
+              AI Search in progress
+              <span className="ml-2 animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></span>
+            </div>
+          ) :
             (searchTerm.trim().length >= 3 ? (
               <div className="py-6 text-center text-sm">
                 Oops! can't find "{searchTerm.trim()}" in our Database.

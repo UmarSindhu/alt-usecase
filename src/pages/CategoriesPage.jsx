@@ -7,15 +7,19 @@ import CategoryGrid from '@/components/home/CategoryGrid';
 
 const CategoriesPage = () => {
   const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const loadData = async () => {
+    setLoading(true);
     const fetchedCategories = await fetchCategories();
     setCategories(fetchedCategories);
+    setLoading(false);
   }
 
   useEffect(() => {
     loadData();
   }, [])
+
   return (
     <>
       <Helmet>
@@ -55,9 +59,13 @@ const CategoriesPage = () => {
             All use cases and items are carefully pushed under the below categories. Happy Exploring!
           </motion.p>
         </section>
-
-        <CategoryGrid categories={categories} />
-
+        {loading ? (
+          <div className="flex justify-center items-center min-h-200px]">
+            <div className="animate-spin rounded-full h-16 w-16 sm:h-32 sm:w-32 border-t-2 border-b-2 border-primary"></div>
+          </div>
+        ) : (
+          <CategoryGrid categories={categories} />
+        )}
       </motion.div>
     </>
   );

@@ -1,5 +1,4 @@
 import { createContext, useContext, useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabaseClient';
 
 const AuthContext = createContext(null);
 
@@ -8,42 +7,66 @@ export const AuthProvider = ({ children }) => {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    // Check existing session on initial load
     const checkSession = async () => {
       setIsLoading(true);
-      
-      // First try to get any existing session
-      const { data: { session }, error } = await supabase.auth.getSession();
-      
-      if (session) {
-        setUser(session.user);
+      try {
+        // First check localStorage for existing session
+        const storedUser = localStorage.getItem('supabaseUser');
+        if (storedUser) {
+          setUser(JSON.parse(storedUser));
+        }
+
+        // Then verify with server
+        const response = await fetch('/api/service/auth/session');
+        if (!response.ok) throw new Error('Session check failed');
+        
+        const { user: currentUser } = await response.json();
+        if (currentUser) {
+          setUser(currentUser);
+          localStorage.setItem('supabaseUser', JSON.stringify(currentUser));
+        } else {
+          localStorage.removeItem('supabaseUser');
+        }
+      } catch (error) {
+        console.error('Session error:', error);
+        localStorage.removeItem('supabaseUser');
+        setUser(null);
+      } finally {
+        setIsLoading(false);
       }
-      
-      setIsLoading(false);
     };
 
     checkSession();
 
-    // Listen for auth state changes
-    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session) {
-        setUser(session.user);
+    const eventSource = new EventSource('/api/service/auth/realtime');
+    eventSource.onmessage = (e) => {
+      const { user: updatedUser } = JSON.parse(e.data);
+      setUser(updatedUser);
+      if (updatedUser) {
+        localStorage.setItem('supabaseUser', JSON.stringify(updatedUser));
       } else {
-        setUser(null);
+        localStorage.removeItem('supabaseUser');
       }
-    });
+    };
 
-    return () => subscription.unsubscribe();
+    return () => eventSource.close();
   }, []);
 
   const login = async (email, password) => {
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password,
+      const response = await fetch('/api/service/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, password })
       });
 
-      if (error) throw error;
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error);
+      }
+
+      const { user } = await response.json();
+      setUser(user);
       return true;
     } catch (error) {
       console.error('Login error:', error.message);
@@ -52,8 +75,13 @@ export const AuthProvider = ({ children }) => {
   };
 
   const logout = async () => {
-    await supabase.auth.signOut();
-    setUser(null);
+    try {
+      const response = await fetch('/api/service/auth/logout', { method: 'POST' });
+      if (!response.ok) throw new Error('Logout failed');
+      setUser(null);
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
   };
 
   const value = {

@@ -206,7 +206,12 @@ const HeroSearch = ({ onSearchItemsUpdate }) => {
                       disabled={isGenerating}
                     >
                       <Wand2 className="mr-2 h-4 w-4" />
-                      {isGenerating ? 'AI Search in progress. Please wait..' : 'Search using our AI'}
+                      {isGenerating ? (
+                        <span className="flex items-center">
+                          AI Search in progress
+                          <span className="ml-2 animate-spin rounded-full h-5 w-5 border-t-2 border-b-2 border-white"></span>
+                        </span>
+                      ) : 'Search using our AI'}
                     </Button>
                   )}
                 </div>

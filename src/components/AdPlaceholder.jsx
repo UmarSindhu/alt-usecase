@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabaseClient';
 import { Megaphone } from 'lucide-react';
 
 const AdPlaceholder = ({ slotKey, defaultText = "Advertisement", className = "h-24" }) => {
@@ -9,34 +8,20 @@ const AdPlaceholder = ({ slotKey, defaultText = "Advertisement", className = "h-
   useEffect(() => {
     const fetchAdSettings = async () => {
       try {
-        const { data: slotSetting, error: slotError } = await supabase
-          .from('ad_settings')
-          .select('is_enabled')
-          .eq('setting_key', slotKey)
-          .single();
-
-        if (slotError && slotError.code !== 'PGRST116') { 
-          console.error(`Error fetching ad slot setting ${slotKey}:`, slotError);
-        } else if (slotSetting) {
-          setIsEnabled(slotSetting.is_enabled);
-        } else {
-          setIsEnabled(false); 
-        }
+        const response = await fetch(`/api/service/ads/settings?slotKey=${encodeURIComponent(slotKey)}`);
         
-        const { data: pubIdSetting, error: pubIdError } = await supabase
-          .from('ad_settings')
-          .select('setting_value')
-          .eq('setting_key', 'adsense_publisher_id')
-          .single();
-
-        if (pubIdError && pubIdError.code !== 'PGRST116') {
-          console.error('Error fetching AdSense Publisher ID:', pubIdError);
-        } else if (pubIdSetting) {
-          setPublisherId(pubIdSetting.setting_value || '');
+        if (!response.ok) {
+          throw new Error('Failed to fetch ad settings');
         }
+
+        const { isEnabled, publisherId } = await response.json();
+        setIsEnabled(isEnabled);
+        setPublisherId(publisherId);
 
       } catch (error) {
-        console.error('Unexpected error fetching ad settings:', error);
+        console.error('Error fetching ad settings:', error);
+        setIsEnabled(false);
+        setPublisherId('');
       }
     };
 

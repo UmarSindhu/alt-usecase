@@ -1,4 +1,4 @@
-import { supabase } from '../src/lib/supabaseClient.js';
+import { supabase } from '#api/supabaseClient';
 import { CATEGORIES } from '../src/lib/constants.js';
 
 export default async function handler(req, res) {

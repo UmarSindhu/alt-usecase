@@ -1,5 +1,5 @@
-import { supabase } from '../src/lib/supabaseClient.js';
-import { CATEGORIES } from '../src/lib/constants.js';
+import { supabase } from '#api/supabaseClient';
+import { CATEGORIES } from '../../../src/lib/constants.js';
 
 const PEXELS_API_KEY = process.env.PEXELS_API_KEY;
 const DEEPSEEK_API_KEY = process.env.DEEPSEEK_API_KEY;
@@ -99,7 +99,7 @@ const generateAndStoreItem = async (itemName) => {
 
     const data = await response.json();
     const aiText = data.choices[0]?.message?.content;
-    console.log("DeepSeek response: ", data);
+    //console.log("DeepSeek response: ", data);
     
     // Robust JSON parsing
     let parsed = {};
