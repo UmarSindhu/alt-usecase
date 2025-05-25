@@ -15,8 +15,9 @@ if (!supabaseUrl || !supabaseKey) {
 
 export const supabase = createClient(supabaseUrl, supabaseKey, {
   auth: {
-    persistSession: false, // Recommended for serverless
-    autoRefreshToken: false
+    autoRefreshToken: true,
+    persistSession: true,
+    detectSessionInUrl: false
   },
   global: {
     headers: {

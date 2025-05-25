@@ -1,5 +1,4 @@
-
-    import React, { useState, useEffect, useCallback } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -25,8 +24,8 @@ const AdminTagsTab = () => {
     setIsLoading(true);
     try {
       const [tagsRes, categoriesRes] = await Promise.all([
-        fetch('/api/service/admin/tags'),
-        fetch('/api/service/admin/categories')
+        fetch('/api/service/admin?op=tags'),
+        fetch('/api/service/admin?op=categories')
       ]);
 
       if (!tagsRes.ok || !categoriesRes.ok) {
@@ -52,180 +51,174 @@ const AdminTagsTab = () => {
   }, [fetchData]);
 
   const handleAddTag = async () => {
-    if (!newTagName.trim()) {
-      toast({ title: "Tag name cannot be empty", variant: "destructive" });
-      return;
-    }
+    if (!newTagName.trim()) return;
     try {
-      const response = await fetch('/api/service/admin/tags/create', {
+      const response = await fetch('/api/service/admin?op=addTag', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ name: newTagName.trim() })
       });
-      
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error);
+        const error = await response.json();
+        throw new Error(error.message);
       }
 
-      const newTag = await response.json();
-      setTags(prev => [...prev, newTag]);
       setNewTagName('');
-      toast({ title: "Tag Added", description: `Tag "${newTagName}" created.` });
+      fetchData();
+      toast({ title: "Success", description: "Tag added successfully" });
     } catch (error) {
       toast({ title: "Error adding tag", description: error.message, variant: "destructive" });
     }
   };
 
   const handleUpdateTag = async () => {
-    if (!editingTag || !editingTag.name.trim()) return;
+    if (!editingTag) return;
     try {
-      const response = await fetch('/api/service/admin/tags/update', {
-        method: 'PUT',
+      const response = await fetch('/api/service/admin?op=updateTag', {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ id: editingTag.id, name: editingTag.name.trim() })
+        body: JSON.stringify(editingTag)
       });
-      
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error);
+        const error = await response.json();
+        throw new Error(error.message);
       }
 
-      fetchData();
       setEditingTag(null);
-      toast({ title: "Tag Updated" });
+      fetchData();
+      toast({ title: "Success", description: "Tag updated successfully" });
     } catch (error) {
       toast({ title: "Error updating tag", description: error.message, variant: "destructive" });
     }
   };
 
   const handleDeleteTag = async (tagId) => {
-    if (!window.confirm("Are you sure you want to delete this tag? This might affect existing items.")) return;
     try {
-      const response = await fetch('/api/service/admin/tags/delete', {
-        method: 'DELETE',
+      const response = await fetch('/api/service/admin?op=deleteTag', {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: tagId })
       });
-      
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error);
+        const error = await response.json();
+        throw new Error(error.message);
       }
 
       fetchData();
-      toast({ title: "Tag Deleted" });
+      toast({ title: "Success", description: "Tag deleted successfully" });
     } catch (error) {
       toast({ title: "Error deleting tag", description: error.message, variant: "destructive" });
     }
   };
 
   const handleAddCategory = async () => {
-    if (!newCategory.name.trim() || !newCategory.slug.trim()) {
-      toast({ title: "Category name and slug cannot be empty", variant: "destructive" });
-      return;
-    }
+    if (!newCategory.name || !newCategory.slug) return;
     try {
-      const response = await fetch('/api/service/admin/categories/create', {
+      const response = await fetch('/api/service/admin?op=addCategory', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(newCategory)
       });
-      
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error);
+        const error = await response.json();
+        throw new Error(error.message);
       }
 
-      const newCategoryData = await response.json();
-      setCategories(prev => [...prev, newCategoryData]);
       setNewCategory({ name: '', slug: '', description: '', icon_name: 'Default' });
-      toast({ title: "Category Added" });
+      fetchData();
+      toast({ title: "Success", description: "Category added successfully" });
     } catch (error) {
       toast({ title: "Error adding category", description: error.message, variant: "destructive" });
     }
   };
 
   const handleUpdateCategory = async () => {
-    if (!editingCategory || !editingCategory.name.trim() || !editingCategory.slug.trim()) return;
+    if (!editingCategory) return;
     try {
-      const response = await fetch('/api/service/admin/categories/update', {
-        method: 'PUT',
+      const response = await fetch('/api/service/admin?op=updateCategory', {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(editingCategory)
       });
-      
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error);
+        const error = await response.json();
+        throw new Error(error.message);
       }
 
-      fetchData();
       setEditingCategory(null);
-      toast({ title: "Category Updated" });
+      fetchData();
+      toast({ title: "Success", description: "Category updated successfully" });
     } catch (error) {
       toast({ title: "Error updating category", description: error.message, variant: "destructive" });
     }
   };
 
   const handleDeleteCategory = async (categoryId) => {
-    if (!window.confirm("Are you sure you want to delete this category? This might affect existing items.")) return;
     try {
-      const response = await fetch('/api/service/admin/categories/delete', {
-        method: 'DELETE',
+      const response = await fetch('/api/service/admin?op=deleteCategory', {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: categoryId })
       });
-      
+
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error);
+        const error = await response.json();
+        throw new Error(error.message);
       }
 
       fetchData();
-      toast({ title: "Category Deleted" });
+      toast({ title: "Success", description: "Category deleted successfully" });
     } catch (error) {
       toast({ title: "Error deleting category", description: error.message, variant: "destructive" });
     }
   };
-  
+
   const renderIcon = (iconName) => {
-    const IconComponent = iconMap[iconName] || iconMap.Default;
-    return <IconComponent className="h-4 w-4 mr-2" />;
+    const Icon = iconMap[iconName] || iconMap.Default;
+    return <Icon className="h-4 w-4 mr-2 text-primary" />;
   };
 
-
-  if (isLoading) return <p>Loading tags and categories...</p>;
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   return (
-    <div className="grid md:grid-cols-2 gap-6">
+    <div className="grid gap-4 md:grid-cols-2">
       <Card>
         <CardHeader>
-          <CardTitle>Manage Tags</CardTitle>
-          <CardDescription>Add, edit, or delete tags for items.</CardDescription>
+          <CardTitle className="flex items-center"><TagIcon className="mr-2 h-5 w-5 text-primary" />Tags</CardTitle>
+          <CardDescription>Manage item tags</CardDescription>
         </CardHeader>
         <CardContent>
-          <div className="flex gap-2 mb-4">
-            <Input placeholder="New tag name" value={newTagName} onChange={(e) => setNewTagName(e.target.value)} />
-            <Button onClick={handleAddTag}><Plus className="h-4 w-4 mr-1" />Add</Button>
-          </div>
+          {editingTag ? (
+            <div className="space-y-3 p-3 border rounded-md mb-4">
+              <h4 className="font-medium">Edit Tag</h4>
+              <Input value={editingTag.name} onChange={(e) => setEditingTag({...editingTag, name: e.target.value})} />
+              <div className="flex gap-2">
+                <Button onClick={handleUpdateTag}><Save className="h-4 w-4 mr-1" />Save</Button>
+                <Button variant="outline" onClick={() => setEditingTag(null)}>Cancel</Button>
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-3 p-3 border rounded-md mb-4">
+              <h4 className="font-medium">Add New Tag</h4>
+              <div className="flex gap-2">
+                <Input placeholder="Tag Name" value={newTagName} onChange={(e) => setNewTagName(e.target.value)} />
+                <Button onClick={handleAddTag}><Plus className="h-4 w-4" /></Button>
+              </div>
+            </div>
+          )}
           <div className="space-y-2 max-h-96 overflow-y-auto">
             {tags.map(tag => (
               <div key={tag.id} className="flex items-center justify-between p-2 border rounded-md hover:bg-muted/50">
-                {editingTag?.id === tag.id ? (
-                  <Input value={editingTag.name} onChange={(e) => setEditingTag({...editingTag, name: e.target.value})} className="h-8"/>
-                ) : (
-                  <span className="text-sm">{tag.name}</span>
-                )}
+                <span className="text-sm">{tag.name}</span>
                 <div className="flex gap-1">
-                  {editingTag?.id === tag.id ? (
-                    <>
-                      <Button variant="ghost" size="icon" onClick={handleUpdateTag}><Save className="h-4 w-4 text-green-600" /></Button>
-                      <Button variant="ghost" size="icon" onClick={() => setEditingTag(null)}><XIcon className="h-4 w-4" /></Button>
-                    </>
-                  ) : (
-                    <Button variant="ghost" size="icon" onClick={() => setEditingTag(tag)}><Edit3 className="h-4 w-4" /></Button>
-                  )}
+                  <Button variant="ghost" size="icon" onClick={() => setEditingTag(JSON.parse(JSON.stringify(tag)))}><Edit3 className="h-4 w-4" /></Button>
                   <Button variant="ghost" size="icon" onClick={() => handleDeleteTag(tag.id)}><Trash2 className="h-4 w-4 text-destructive" /></Button>
                 </div>
               </div>
@@ -236,18 +229,18 @@ const AdminTagsTab = () => {
 
       <Card>
         <CardHeader>
-          <CardTitle>Manage Categories</CardTitle>
-          <CardDescription>Add, edit, or delete item categories.</CardDescription>
+          <CardTitle className="flex items-center"><Package className="mr-2 h-5 w-5 text-primary" />Categories</CardTitle>
+          <CardDescription>Manage item categories</CardDescription>
         </CardHeader>
         <CardContent>
           {editingCategory ? (
             <div className="space-y-3 p-3 border rounded-md mb-4">
-              <h4 className="font-medium">Edit Category: {editingCategory.name}</h4>
-              <div><Label htmlFor={`edit-cat-name-${editingCategory.id}`}>Name</Label><Input id={`edit-cat-name-${editingCategory.id}`} value={editingCategory.name} onChange={(e) => setEditingCategory({...editingCategory, name: e.target.value})} /></div>
-              <div><Label htmlFor={`edit-cat-slug-${editingCategory.id}`}>Slug</Label><Input id={`edit-cat-slug-${editingCategory.id}`} value={editingCategory.slug} onChange={(e) => setEditingCategory({...editingCategory, slug: e.target.value.toLowerCase().replace(/\s+/g, '-')})} /></div>
-              <div><Label htmlFor={`edit-cat-desc-${editingCategory.id}`}>Description</Label><Input id={`edit-cat-desc-${editingCategory.id}`} value={editingCategory.description || ''} onChange={(e) => setEditingCategory({...editingCategory, description: e.target.value})} /></div>
-              <div><Label htmlFor={`edit-cat-icon-${editingCategory.id}`}>Icon Name</Label>
-                <select id={`edit-cat-icon-${editingCategory.id}`} value={editingCategory.icon_name || 'Default'} onChange={(e) => setEditingCategory({...editingCategory, icon_name: e.target.value})} className="w-full p-2 border rounded-md bg-background">
+              <h4 className="font-medium">Edit Category</h4>
+              <div><Label htmlFor="edit-cat-name">Name</Label><Input id="edit-cat-name" value={editingCategory.name} onChange={(e) => setEditingCategory({...editingCategory, name: e.target.value})} /></div>
+              <div><Label htmlFor="edit-cat-slug">Slug</Label><Input id="edit-cat-slug" value={editingCategory.slug} onChange={(e) => setEditingCategory({...editingCategory, slug: e.target.value.toLowerCase().replace(/\s+/g, '-')})} /></div>
+              <div><Label htmlFor="edit-cat-desc">Description</Label><Input id="edit-cat-desc" value={editingCategory.description || ''} onChange={(e) => setEditingCategory({...editingCategory, description: e.target.value})} /></div>
+              <div><Label htmlFor="edit-cat-icon">Icon Name</Label>
+                <select id="edit-cat-icon" value={editingCategory.icon_name} onChange={(e) => setEditingCategory({...editingCategory, icon_name: e.target.value})} className="w-full p-2 border rounded-md bg-background">
                     {Object.keys(iconMap).map(iconKey => <option key={iconKey} value={iconKey}>{iconKey}</option>)}
                 </select>
               </div>

@@ -1,62 +1,46 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 
-const AuthContext = createContext(null);
+const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    const checkSession = async () => {
-      setIsLoading(true);
+    const checkAuth = async () => {
       try {
-        // First check localStorage for existing session
-        const storedUser = localStorage.getItem('supabaseUser');
-        if (storedUser) {
-          setUser(JSON.parse(storedUser));
-        }
-
-        // Then verify with server
-        const response = await fetch('/api/service/auth/session');
-        if (!response.ok) throw new Error('Session check failed');
+        const response = await fetch('/api/service/auth?op=session', {
+          credentials: 'include' // Important for cookies
+        });
         
-        const { user: currentUser } = await response.json();
-        if (currentUser) {
-          setUser(currentUser);
-          localStorage.setItem('supabaseUser', JSON.stringify(currentUser));
-        } else {
-          localStorage.removeItem('supabaseUser');
+        if (!response.ok) {
+          setUser(null);
+          return;
         }
+        
+        const { user } = await response.json();
+        setUser(user);
       } catch (error) {
-        console.error('Session error:', error);
-        localStorage.removeItem('supabaseUser');
+        console.error('Auth check error:', error);
         setUser(null);
       } finally {
         setIsLoading(false);
       }
     };
 
-    checkSession();
+    checkAuth();
 
-    const eventSource = new EventSource('/api/service/auth/realtime');
-    eventSource.onmessage = (e) => {
-      const { user: updatedUser } = JSON.parse(e.data);
-      setUser(updatedUser);
-      if (updatedUser) {
-        localStorage.setItem('supabaseUser', JSON.stringify(updatedUser));
-      } else {
-        localStorage.removeItem('supabaseUser');
-      }
-    };
-
-    return () => eventSource.close();
+    // Poll for session status every 5 minutes to keep it alive
+    const interval = setInterval(checkAuth, 5 * 60 * 1000);
+    return () => clearInterval(interval);
   }, []);
 
   const login = async (email, password) => {
     try {
-      const response = await fetch('/api/service/auth/login', {
+      const response = await fetch('/api/service/auth?op=login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', // Important for cookies
         body: JSON.stringify({ email, password })
       });
 
@@ -76,7 +60,11 @@ export const AuthProvider = ({ children }) => {
 
   const logout = async () => {
     try {
-      const response = await fetch('/api/service/auth/logout', { method: 'POST' });
+      const response = await fetch('/api/service/auth?op=logout', {
+        method: 'POST',
+        credentials: 'include' // Important for cookies
+      });
+      
       if (!response.ok) throw new Error('Logout failed');
       setUser(null);
     } catch (error) {

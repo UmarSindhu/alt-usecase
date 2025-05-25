@@ -42,7 +42,7 @@ const SuggestionsPage = () => {
 
 
     try {
-      const response = await fetch('/api/service/suggestions/create', {
+      const response = await fetch('/api/service/admin?op=submitsuggestion', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -6,7 +6,7 @@ export const seedSampleData = async () => {
     await initializeDefaultCategories();
 
     // Then trigger the bulk seed operation
-    const response = await fetch('/api/service/admin/seed/items', {
+    const response = await fetch('/api/service/admin?op=seed', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -19,7 +19,6 @@ export const seedSampleData = async () => {
     }
 
     const result = await response.json();
-    console.log('Seed results:', result.results);
     return result;
   } catch (error) {
     console.error('Error seeding data:', error);

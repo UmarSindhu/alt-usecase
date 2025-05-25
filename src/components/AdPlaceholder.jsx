@@ -8,7 +8,7 @@ const AdPlaceholder = ({ slotKey, defaultText = "Advertisement", className = "h-
   useEffect(() => {
     const fetchAdSettings = async () => {
       try {
-        const response = await fetch(`/api/service/ads/settings?slotKey=${encodeURIComponent(slotKey)}`);
+        const response = await fetch(`/api/service/ads?op=settings&slotKey=${encodeURIComponent(slotKey)}`);
         
         if (!response.ok) {
           throw new Error('Failed to fetch ad settings');

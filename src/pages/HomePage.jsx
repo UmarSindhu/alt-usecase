@@ -51,8 +51,8 @@
       const handleSurpriseMe = async () => {
         toast({ title: "Finding a surprise..."});
         const randomItem = await getRandomItem();
-        if (randomItem && randomItem.slug) {
-          navigate(`/use/${randomItem.slug}`);
+        if (randomItem) {
+          navigate(`/use/${randomItem}`);
         } else {
           toast({ title: "Oops!", description: "Couldn't find an item to surprise you with right now.", variant: "destructive"});
         }

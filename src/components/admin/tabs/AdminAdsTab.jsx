@@ -18,7 +18,7 @@ const AdminAdsTab = () => {
   const fetchAdSettings = async () => {
     setIsLoadingAdSettings(true);
     try {
-      const response = await fetch('/api/service/admin/ads/settings');
+      const response = await fetch('/api/service/ads?op=allSettings');
       
       if (!response.ok) {
         throw new Error('Failed to fetch ad settings');
@@ -54,7 +54,7 @@ const AdminAdsTab = () => {
     }));
 
     try {
-      const response = await fetch('/api/service/admin/ads/update', {
+      const response = await fetch('/api/service/ads?op=updateSetting', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ 

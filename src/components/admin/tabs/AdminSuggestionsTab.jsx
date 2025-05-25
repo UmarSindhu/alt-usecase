@@ -22,7 +22,7 @@ const AdminSuggestionsTab = () => {
   const fetchSuggestions = useCallback(async () => {
     setIsLoading(true);
     try {
-      const response = await fetch('/api/service/admin/suggestions');
+      const response = await fetch('/api/service/admin?op=suggestions');
       
       if (!response.ok) {
         throw new Error('Failed to fetch suggestions');
@@ -43,7 +43,7 @@ const AdminSuggestionsTab = () => {
 
   const updateSuggestionStatus = async (suggestionId, newStatus) => {
     try {
-      const response = await fetch(`/api/service/admin/suggestions/update`, {
+      const response = await fetch('/api/service/admin?op=updateSuggestion', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: suggestionId, status: newStatus })
@@ -55,17 +55,16 @@ const AdminSuggestionsTab = () => {
       }
 
       fetchSuggestions();
-      toast({ title: "Suggestion Updated", description: `Status changed to ${newStatus}.` });
+      toast({ title: "Success", description: `Suggestion status updated to ${newStatus}.` });
     } catch (error) {
       toast({ title: "Error updating suggestion", description: error.message, variant: "destructive" });
     }
   };
-  
+
   const deleteSuggestion = async (suggestionId) => {
-    if (!window.confirm("Are you sure you want to delete this suggestion?")) return;
     try {
-      const response = await fetch(`/api/service/admin/suggestions/delete`, {
-        method: 'DELETE',
+      const response = await fetch('/api/service/admin?op=deleteSuggestion', {
+        method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ id: suggestionId })
       });
@@ -76,22 +75,24 @@ const AdminSuggestionsTab = () => {
       }
 
       fetchSuggestions();
-      toast({ title: "Suggestion Deleted", description: "Suggestion removed successfully." });
+      toast({ title: "Success", description: "Suggestion deleted successfully." });
     } catch (error) {
-      toast({ title: "Error Deleting Suggestion", description: error.message, variant: "destructive"});
+      toast({ title: "Error deleting suggestion", description: error.message, variant: "destructive" });
     }
   };
 
   const getStatusBadge = (status) => {
     switch (status) {
-      case 'pending': return <Badge variant="outline"><Clock className="mr-1 h-3 w-3" />Pending</Badge>;
-      case 'approved': return <Badge variant="default" className="bg-green-600 hover:bg-green-700"><CheckCircle className="mr-1 h-3 w-3" />Approved</Badge>;
-      case 'rejected': return <Badge variant="destructive"><XCircle className="mr-1 h-3 w-3" />Rejected</Badge>;
-      default: return <Badge variant="secondary">{status}</Badge>;
+      case 'pending':
+        return <Badge variant="outline" className="bg-yellow-50 text-yellow-700 border-yellow-300"><Clock className="w-3 h-3 mr-1" /> Pending</Badge>;
+      case 'approved':
+        return <Badge variant="outline" className="bg-green-50 text-green-700 border-green-300"><CheckCircle className="w-3 h-3 mr-1" /> Approved</Badge>;
+      case 'rejected':
+        return <Badge variant="outline" className="bg-red-50 text-red-700 border-red-300"><XCircle className="w-3 h-3 mr-1" /> Rejected</Badge>;
+      default:
+        return <Badge variant="outline">{status}</Badge>;
     }
   };
-
-  if (isLoading) return <p>Loading suggestions...</p>;
 
   return (
     <Card>
@@ -100,7 +101,9 @@ const AdminSuggestionsTab = () => {
         <CardDescription>Review and manage suggestions submitted by users.</CardDescription>
       </CardHeader>
       <CardContent>
-        {suggestions.length === 0 ? (
+        {isLoading ? (
+          <p className="text-center py-4">Loading suggestions...</p>
+        ) : suggestions.length === 0 ? (
           <p className="text-muted-foreground text-center py-4">No suggestions yet.</p>
         ) : (
           <Table>
@@ -114,34 +117,50 @@ const AdminSuggestionsTab = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {suggestions.map(s => (
-                <TableRow key={s.id}>
-                  <TableCell className="text-xs text-muted-foreground">
-                    {formatDistanceToNow(new Date(s.created_at), { addSuffix: true })}
-                    {s.name && <div className="font-medium text-foreground">{s.name}</div>}
-                    {s.email && <div className="text-xs">{s.email}</div>}
+              {suggestions.map((suggestion) => (
+                <TableRow key={suggestion.id}>
+                  <TableCell className="whitespace-nowrap">
+                    {formatDistanceToNow(new Date(suggestion.created_at), { addSuffix: true })}
                   </TableCell>
-                  <TableCell className="capitalize">{s.suggestion_type?.replace('_', ' ')}</TableCell>
+                  <TableCell className="whitespace-nowrap">{suggestion.type}</TableCell>
                   <TableCell>
-                    {s.item_name && <p><strong>Item:</strong> {s.item_name}</p>}
-                    {s.use_case_description && <p className="text-sm text-muted-foreground truncate max-w-xs" title={s.use_case_description}><strong>Use:</strong> {s.use_case_description}</p>}
-                    {s.feedback && <p className="text-sm text-muted-foreground truncate max-w-xs" title={s.feedback}><strong>Feedback:</strong> {s.feedback}</p>}
+                    <div className="max-w-md">
+                      <p className="font-medium truncate">{suggestion.title || suggestion.name}</p>
+                      <p className="text-sm text-muted-foreground truncate">{suggestion.description}</p>
+                    </div>
                   </TableCell>
-                  <TableCell>{getStatusBadge(s.status)}</TableCell>
-                  <TableCell className="text-right space-x-1">
-                    {s.status === 'pending' && (
-                      <>
-                        <Button variant="ghost" size="sm" onClick={() => updateSuggestionStatus(s.id, 'approved')} title="Approve">
-                          <CheckCircle className="h-4 w-4 text-green-600" />
-                        </Button>
-                        <Button variant="ghost" size="sm" onClick={() => updateSuggestionStatus(s.id, 'rejected')} title="Reject">
-                          <XCircle className="h-4 w-4 text-orange-600" />
-                        </Button>
-                      </>
-                    )}
-                    <Button variant="ghost" size="sm" onClick={() => deleteSuggestion(s.id)} title="Delete Suggestion">
-                      <Trash2 className="h-4 w-4 text-destructive" />
-                    </Button>
+                  <TableCell>{getStatusBadge(suggestion.status)}</TableCell>
+                  <TableCell className="text-right">
+                    <div className="flex justify-end gap-2">
+                      {suggestion.status === 'pending' && (
+                        <>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-green-600 hover:text-green-700"
+                            onClick={() => updateSuggestionStatus(suggestion.id, 'approved')}
+                          >
+                            <CheckCircle className="h-4 w-4" />
+                          </Button>
+                          <Button
+                            variant="outline"
+                            size="sm"
+                            className="text-red-600 hover:text-red-700"
+                            onClick={() => updateSuggestionStatus(suggestion.id, 'rejected')}
+                          >
+                            <XCircle className="h-4 w-4" />
+                          </Button>
+                        </>
+                      )}
+                      <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-destructive hover:text-destructive"
+                        onClick={() => deleteSuggestion(suggestion.id)}
+                      >
+                        <Trash2 className="h-4 w-4" />
+                      </Button>
+                    </div>
                   </TableCell>
                 </TableRow>
               ))}

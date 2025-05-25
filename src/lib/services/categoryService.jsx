@@ -3,7 +3,7 @@ import { Package } from 'lucide-react';
 
 export const initializeDefaultCategories = async (defaultCategories = DEFAULT_CATEGORIES_WITH_ICONS) => {
   try {
-    const response = await fetch('/api/service/categories/initialize', {
+    const response = await fetch('/api/service/categories?op=initialize', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -32,7 +32,7 @@ export const initializeDefaultCategories = async (defaultCategories = DEFAULT_CA
 
 export const getCategories = async () => {
   try {
-    const response = await fetch('/api/service/categories/getCategories');
+    const response = await fetch('/api/service/categories');
     
     if (!response.ok) {
       throw new Error('Failed to fetch categories');
@@ -49,7 +49,7 @@ export const getCategories = async () => {
     }
 
     // Normal processing
-    return result.data.map(c => {
+    return result.map(c => {
       const iconComponent = DEFAULT_CATEGORIES_WITH_ICONS
         .find(dc => dc.slug === c.slug)?.icon || Package;
       return {
@@ -70,7 +70,7 @@ export const getCategories = async () => {
 
 export const getTags = async () => {
   try {
-    const response = await fetch('/api/service/categories/getTags');
+    const response = await fetch('/api/service/categories?op=tags');
     
     if (!response.ok) {
       throw new Error('Failed to fetch tags');
@@ -86,7 +86,7 @@ export const getTags = async () => {
 
 export const getCategoriesWithCounts = async (limit = 'all') => {
   try {
-    const url = `/api/service/categories/getCategoriesWithCounts${limit !== 'all' ? `?limit=${limit}` : ''}`;
+    const url = `/api/service/categories?op=withCounts${limit !== 'all' ? `&limit=${limit}` : ''}`;
     const response = await fetch(url);
     
     if (!response.ok) {

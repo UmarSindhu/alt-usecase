@@ -106,8 +106,8 @@ export function SearchCommand({ open, setOpen }) {
     toast({ title: "Finding a surprise..." });
     const randomItem = await fetchRandomItem();
     setIsLoading(false);
-    if (randomItem?.slug) {
-      runCommand(() => navigate(`/use/${randomItem.slug}`));
+    if (randomItem) {
+      runCommand(() => navigate(`/use/${randomItem}`));
     } else {
       toast({ 
         title: "Oops!", 
