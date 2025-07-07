@@ -2,6 +2,7 @@
 
 [![React](https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB)](https://reactjs.org/)
 [![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)](https://nodejs.org/)
+[![Supabase](https://img.shields.io/badge/Supabase-3ECF8E?style=for-the-badge&logo=supabase&logoColor=white)](https://supabase.io)
 [![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)](https://tailwindcss.com/)
 [![OpenAI](https://img.shields.io/badge/OpenAI-412991?style=for-the-badge&logo=openai&logoColor=white)](https://openai.com/)
 
@@ -38,6 +39,7 @@ This project was built using a modern and robust technology stack, chosen to cre
 * **Backend:**
     * [**Node.js**](https://nodejs.org/): As the JavaScript runtime environment.
     * [**Express.js**](https://expressjs.com/): To create a robust and minimalist API to handle requests from the frontend.
+    * [**Supabase**](https://supabase.io/): Used for database and backend services.
 
 * **External API:**
     * [**OpenAI API**](https://openai.com/api/): For the core AI text-generation functionality.
@@ -59,7 +61,7 @@ You can experience the application live at [altusecase.com](https://altusecase.c
 
 Thank you for viewing my project. I am actively seeking new opportunities and would be happy to connect.
 
-**Your Name**
+**Umar Sindhu**
 * **Email:** hello@sindhusolutions.com
 * **Portfolio:** [https://sindhusolutions.com](https://sindhusolutions.com)
 * **LinkedIn:** [https://www.linkedin.com/in/umar-sindhu-313949103/](https://www.linkedin.com/in/umar-sindhu-313949103/)
